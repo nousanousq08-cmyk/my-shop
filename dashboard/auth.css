@@ -1,0 +1,33 @@
+.auth-container {
+    max-width: 400px;
+    width: 90%;
+}
+
+.auth-form {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.auth-form.hidden {
+    display: none;
+}
+
+#authMessage {
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+#authMessage.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+#authMessage.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}

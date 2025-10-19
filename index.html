@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-indigo-600 cursor-pointer" id="storeName">Best Shop</h1>
+                </div>
+
+                  
+                <!-- أضف هذا في قسم المنتج بعد زر Back الموجود -->
+<div class="flex justify-between items-center mb-4">
+    <button onclick="showHomepage()" class="text-indigo-600 hover:text-indigo-800 flex items-center">
+        <span id="backText">← Back to Products</span>
+    </button>
+</div> 
+
+
+
+
+
+
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Language Selector -->
+                    <select id="languageSelector" class="bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                        <option value="fr">Français</option>
+                    </select>
+                    
+                    <!-- Cart Button -->
+                    <button id="cartBtn" class="relative bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                        <span id="cartText">Cart</span>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center cart-badge hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="mainContent">
+        <!-- Homepage -->
+        <div id="homepage" class="page">
+            <!-- Hero Section -->
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
+                <div class="max-w-7xl mx-auto px-4 text-center">
+                    <h2 id="welcomeMessage" class="text-4xl font-bold mb-4">Welcome to your favorite store</h2>
+                    <p id="heroSubtext" class="text-xl opacity-90">Discover amazing products at great prices</p>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div class="max-w-7xl mx-auto px-4 py-12">
+                <h3 id="productsTitle" class="text-3xl font-bold text-gray-800 mb-8 text-center">Our Products</h3>
+                <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Details Page -->
+        <div id="productDetails" class="page hidden">
+            <div class="max-w-4xl mx-auto px-4 py-8">
+                <button id="backToProducts" class="mb-6 text-indigo-600 hover:text-indigo-800 flex items-center">
+                    <span id="backText">← Back to Products</span>
+                </button>
+                
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="relative">
+                            <!-- Product Media Gallery -->
+                            <div id="productMediaGallery" class="mb-4">
+                                <!-- Main product image/video will be loaded here -->
+                            </div>
+                            <div id="productThumbnails" class="flex space-x-2 overflow-x-auto">
+                                <!-- Product thumbnails will be loaded here -->
+                            </div>
+                            <div id="productDiscount" class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold hidden">
+                                -20%
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h2 id="productDetailName" class="text-3xl font-bold text-gray-800 mb-4"></h2>
+                            <div class="flex items-center space-x-4 mb-6">
+                                <p id="productDetailPrice" class="text-2xl font-bold text-indigo-600"></p>
+                                <p id="productOriginalPrice" class="text-lg text-gray-500 line-through hidden"></p>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 id="descriptionTitle" class="text-lg font-semibold mb-2">Description</h4>
+                                <p id="productDetailDescription" class="text-gray-600"></p>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 id="colorsTitle" class="text-lg font-semibold mb-2">Available Colors</h4>
+                                <div id="colorOptions" class="flex space-x-2"></div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 id="sizesTitle" class="text-lg font-semibold mb-2">Sizes</h4>
+                                <div id="sizeOptions" class="flex space-x-2"></div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 id="quantityTitle" class="text-lg font-semibold mb-2">Quantity</h4>
+                                <div class="flex items-center space-x-2">
+                                    <button id="decreaseQty" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded">-</button>
+                                    <span id="quantity" class="px-4 py-1 border rounded">1</span>
+                                    <button id="increaseQty" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded">+</button>
+                                </div>
+                                <p id="stockInfo" class="text-sm text-gray-500 mt-1"></p>
+                            </div>
+                            
+                            <div class="flex space-x-2">
+                                <button id="orderNowBtn" class="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                                    Order Now
+                                </button>
+                                <button id="addToCartBtn" class="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Page -->
+        <div id="cartPage" class="page hidden">
+            <div class="max-w-4xl mx-auto px-4 py-8">
+                <h2 id="cartTitle" class="text-3xl font-bold text-gray-800 mb-8">Shopping Cart</h2>
+                
+                <div id="cartItems" class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <!-- Cart items will be loaded here -->
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="flex justify-between items-center text-xl font-bold mb-4">
+                        <span id="totalText">Total:</span>
+                        <span id="cartTotal">0 DA</span>
+                    </div>
+                    <button id="checkoutBtn" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                        Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checkout Page -->
+        <div id="checkoutPage" class="page hidden">
+            <div class="max-w-2xl mx-auto px-4 py-8">
+                <h2 id="checkoutTitle" class="text-3xl font-bold text-gray-800 mb-8">Checkout</h2>
+                
+                <form id="checkoutForm" class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label id="nameLabel" class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                            <input type="text" id="customerName" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        
+                        <div>
+                            <label id="lastNameLabel" class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                            <input type="text" id="customerLastName" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label id="phoneLabel" class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                        <input type="tel" id="customerPhone" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label id="wilayaLabel" class="block text-sm font-medium text-gray-700 mb-2">Wilaya *</label>
+                            <select id="wilayaSelect" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Select Wilaya</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label id="communeLabel" class="block text-sm font-medium text-gray-700 mb-2">Commune *</label>
+                            <input type="text" id="customerCommune" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label id="addressLabel" class="block text-sm font-medium text-gray-700 mb-2">Delivery Address *</label>
+                        <textarea id="customerAddress" required rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    </div>
+                    
+                    <div class="mb-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                        <p class="text-sm text-yellow-800" id="orderWarning">
+                            ⚠️ Your order will not be confirmed unless you fill in your full name and phone number correctly.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <span id="subtotalLabel">Subtotal:</span>
+                            <span id="subtotalAmount">0 DA</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span id="deliveryLabel">Delivery Fee:</span>
+                            <span id="deliveryFee">0 DA</span>
+                        </div>
+                        <hr class="my-2">
+                        <div class="flex justify-between items-center font-bold text-lg">
+                            <span id="finalTotalLabel">Total:</span>
+                            <span id="finalTotal">0 DA</span>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <button type="button" id="payOnDeliveryBtn" class="bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                            Pay on Delivery
+                        </button>
+                        <button type="button" id="payWithCCPBtn" class="bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold">
+                            Pay via CCP
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Payment Methods Page -->
+        <div id="paymentPage" class="page hidden">
+            <div class="max-w-2xl mx-auto px-4 py-8">
+                <h2 id="paymentTitle" class="text-3xl font-bold text-gray-800 mb-8">Payment Methods</h2>
+                
+                <div class="space-y-6">
+                    <!-- CCP Payment -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 id="ccpTitle" class="text-xl font-bold text-blue-600 mb-4 flex items-center">
+                            🏦 CCP Transfer
+                        </h3>
+                        <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                            <p class="text-sm text-blue-800 mb-2">
+                                <strong>CCP Account:</strong> <span id="ccpAccountNumber">0012345678901234567890</span><br>
+                                <strong>Account Holder:</strong> Best Shop SARL
+                            </p>
+                            <p id="ccpConditions" class="text-xs text-blue-700">
+                                ⚠️ Important: Upload a clear photo (not scanned or edited) of your payment receipt. Edited or unclear photos will be rejected.
+                            </p>
+                        </div>
+                        <input type="file" id="ccpProof" accept="image/*" class="w-full border border-gray-300 rounded-lg px-3 py-2 mb-2">
+                        <button onclick="uploadPaymentProof('ccp')" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                            Upload CCP Receipt Photo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with Social Media -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 mb-4">
+                <!-- Facebook Button -->
+                <a href="https://www.facebook.com/profile.php?id=61570801097073" 
+                   target="_blank" 
+                   class="bg-blue-600 hover:bg-blue-700 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                
+                <!-- Instagram Button -->
+                <a href="https://www.instagram.com/nisoumeilleursoffres?igsh=MWZsMXB6MWFlcmRundg==" 
+                   target="_blank" 
+                   class="bg-pink-600 hover:bg-pink-700 w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+            <p class="text-gray-400">&copy; 2024 Best Shop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="order-details-modal hidden">
+        <div class="order-details-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Order Details</h3>
+                <button onclick="closeOrderDetails()" class="text-gray-500 hover:text-gray-700">
+                    ✕
+                </button>
+            </div>
+            <div id="orderDetailsContent">
+                <!-- Order details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Best Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <!-- Admin Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-indigo-600">Admin Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="adminWelcome" class="text-gray-700">Welcome, Admin</span>
+                    <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Admin Tabs -->
+        <div class="bg-white rounded-lg shadow-lg mb-6">
+            <div class="flex border-b overflow-x-auto">
+                <button onclick="showTab('products')" class="admin-tab px-6 py-4 font-semibold text-purple-600 border-b-2 border-purple-600 whitespace-nowrap">
+                    Products Management
+                </button>
+                <button onclick="showTab('orders')" class="admin-tab px-6 py-4 font-semibold text-gray-600 hover:text-purple-600 whitespace-nowrap">
+                    Orders Management
+                </button>
+                <button onclick="showTab('delivery')" class="admin-tab px-6 py-4 font-semibold text-gray-600 hover:text-purple-600 whitespace-nowrap">
+                    Delivery & Payment
+                </button>
+                <button onclick="showTab('settings')" class="admin-tab px-6 py-4 font-semibold text-gray-600 hover:text-purple-600 whitespace-nowrap">
+                    Store Settings
+                </button>
+            </div>
+        </div>
+
+        <!-- Products Management -->
+        <div id="productsTab" class="admin-tab-content">
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-4">Add New Product</h2>
+                <form id="addProductForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="productNameEn" placeholder="Product Name (English)" class="border rounded-lg px-3 py-2" required>
+                    <input type="text" id="productNameAr" placeholder="اسم المنتج (عربي)" class="border rounded-lg px-3 py-2" required>
+                    <input type="text" id="productNameFr" placeholder="Nom du produit (Français)" class="border rounded-lg px-3 py-2" required>
+                    <input type="number" id="productPrice" placeholder="Price (DA)" class="border rounded-lg px-3 py-2" required>
+                    <input type="number" id="productDiscount" placeholder="Discount %" class="border rounded-lg px-3 py-2" min="0" max="100">
+                    <input type="number" id="productStock" placeholder="Stock Quantity" class="border rounded-lg px-3 py-2" required>
+                    <input type="text" id="productColors" placeholder="Colors (comma separated)" class="border rounded-lg px-3 py-2">
+                    <input type="text" id="productSizes" placeholder="Sizes (comma separated)" class="border rounded-lg px-3 py-2">
+                    <textarea id="productDescEn" placeholder="Description (English)" class="border rounded-lg px-3 py-2 md:col-span-2" rows="2"></textarea>
+                    <textarea id="productDescAr" placeholder="الوصف (عربي)" class="border rounded-lg px-3 py-2 md:col-span-2" rows="2"></textarea>
+                    <textarea id="productDescFr" placeholder="Description (Français)" class="border rounded-lg px-3 py-2 md:col-span-2" rows="2"></textarea>
+                    <button type="submit" class="md:col-span-2 bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">
+                        Add Product
+                    </button>
+                </form>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">Existing Products</h2>
+                <div id="productsList" class="space-y-4">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Management -->
+        <div id="ordersTab" class="admin-tab-content hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">Customer Orders</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="py-2 px-4 border-b text-left">Order ID</th>
+                                <th class="py-2 px-4 border-b text-left">Customer</th>
+                                <th class="py-2 px-4 border-b text-left">Phone</th>
+                                <th class="py-2 px-4 border-b text-left">Wilaya</th>
+                                <th class="py-2 px-4 border-b text-left">Payment</th>
+                                <th class="py-2 px-4 border-b text-left">Status</th>
+                                <th class="py-2 px-4 border-b text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTable">
+                            <!-- Orders will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery & Payment Management -->
+        <div id="deliveryTab" class="admin-tab-content hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-4">Delivery Fees Management</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Add New Wilaya</label>
+                        <input type="text" id="newWilaya" placeholder="Wilaya Name" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Delivery Fee (DA)</label>
+                        <input type="number" id="newWilayaFee" placeholder="Fee in DA" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                </div>
+                <button onclick="addWilaya()" class="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700">
+                    Add Wilaya
+                </button>
+                
+                <div id="deliveryFeesList" class="mt-6 space-y-2">
+                    <!-- Delivery fees will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">Payment Settings</h2>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">CCP Account Number</label>
+                    <input type="text" id="ccpAccountInput" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                </div>
+                <button onclick="updateCCPAccount()" class="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700">
+                    Update CCP Account
+                </button>
+            </div>
+        </div>
+
+        <!-- Store Settings -->
+        <div id="settingsTab" class="admin-tab-content hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">Store Settings</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Store Name</label>
+                        <input type="text" id="storeNameInput" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Contact Email</label>
+                        <input type="email" id="storeEmailInput" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Contact Phone</label>
+                        <input type="tel" id="storePhoneInput" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                    <button onclick="updateStoreSettings()" class="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700">
+                        Update Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="order-details-modal hidden">
+        <div class="order-details-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Order Details</h3>
+                <button onclick="closeOrderDetails()" class="text-gray-500 hover:text-gray-700">
+                    ✕
+                </button>
+            </div>
+            <div id="orderDetailsContent">
+                <!-- Order details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

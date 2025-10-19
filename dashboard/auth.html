@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Best Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="auth-container">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-indigo-600">Best Shop</h1>
+            <p class="text-gray-600 mt-2">Admin Dashboard</p>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="auth-form">
+            <h2 class="text-2xl font-bold text-center mb-6">Admin Login</h2>
+            <form id="loginFormElement">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <input type="text" id="username" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
+                    Login
+                </button>
+            </form>
+            <div class="text-center mt-4">
+                <button onclick="showForgotPassword()" class="text-indigo-600 hover:text-indigo-800 text-sm">
+                    Forgot Password?
+                </button>
+            </div>
+        </div>
+
+        <!-- Forgot Password Form -->
+        <div id="forgotPasswordForm" class="auth-form hidden">
+            <h2 class="text-2xl font-bold text-center mb-6">Reset Password</h2>
+            <form id="forgotPasswordFormElement">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <input type="email" id="resetEmail" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
+                    Send Reset Code
+                </button>
+            </form>
+            <div class="text-center mt-4">
+                <button onclick="showLogin()" class="text-indigo-600 hover:text-indigo-800 text-sm">
+                    Back to Login
+                </button>
+            </div>
+        </div>
+
+        <!-- Reset Password Form -->
+        <div id="resetPasswordForm" class="auth-form hidden">
+            <h2 class="text-2xl font-bold text-center mb-6">Set New Password</h2>
+            <form id="resetPasswordFormElement">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Reset Code</label>
+                    <input type="text" id="resetCode" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                    <input type="password" id="newPassword" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
+                    Reset Password
+                </button>
+            </form>
+            <div class="text-center mt-4">
+                <button onclick="showLogin()" class="text-indigo-600 hover:text-indigo-800 text-sm">
+                    Back to Login
+                </button>
+            </div>
+        </div>
+
+        <div id="authMessage" class="mt-4 text-center hidden"></div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>
