@@ -1,3 +1,16 @@
+
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+const SUPABASE_URL = 'https://apkogwpcpshvttuqcuxy.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwa29nd3BjcHNodnR0dXFjdXh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5Nzk1MDUsImV4cCI6MjA3NjU1NTUwNX0.lzdSz7RHpkPDK5l-lWWpeC379oOFfjJDiAIHF-m8b8g'
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+
+supabase.from('users').select('*').then(console.log)
+
+
+
 // Translations
 const translations = {
     en: {
