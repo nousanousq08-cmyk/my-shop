@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "routes": [
     { "src": "/", "dest": "/index.html" },
     { "src": "/dashboard", "dest": "/dashboard/dashboard.html" },
@@ -6,3 +7,4 @@
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
+
