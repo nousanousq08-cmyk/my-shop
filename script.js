@@ -1,4 +1,3 @@
-
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
 const SUPABASE_URL = 'https://apkogwpcpshvttuqcuxy.supabase.co'
@@ -6,12 +5,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-
-supabase.from('users').select('*').then(console.log)
-
-
-
-// Translations
+// نظام الترجمة الكامل
 const translations = {
     en: {
         storeName: "Best Shop",
@@ -41,7 +35,7 @@ const translations = {
         finalTotalLabel: "Total:",
         paymentTitle: "Payment Methods",
         ccpTitle: "🏦 CCP Transfer",
-        ccpConditions: "⚠️ Important: Upload a clear photo (not scanned or edited) of your payment receipt. Edited or unclear photos will be rejected.",
+        ccpConditions: "⚠️ Important: Upload a clear photo of your payment receipt. Edited or unclear photos will be rejected.",
         emptyCart: "Your cart is empty",
         orderPlaced: "Order placed successfully! We'll contact you soon.",
         selectWilaya: "Select Wilaya",
@@ -51,40 +45,40 @@ const translations = {
         payWithCCP: "Pay via CCP"
     },
     ar: {
-        storeName: "أفضل محل",
-        welcomeMessage: "مرحبًا بمحلكم المفضل",
-        heroSubtext: "اكتشف منتجات رائعة بأسعار مميزة",
+        storeName: "أفضل متجر",
+        welcomeMessage: "مرحباً بكم في متجركم المفضل",
+        heroSubtext: "اكتشفوا منتجات رائعة بأسعار مميزة",
         productsTitle: "منتجاتنا",
         cartText: "السلة",
-        backText: "← العودة للمنتجات",
+        backText: "← العودة إلى المنتجات",
         descriptionTitle: "الوصف",
         colorsTitle: "الألوان المتاحة",
         sizesTitle: "المقاسات",
         quantityTitle: "الكمية",
-        addToCartBtn: "أضف للسلة",
+        addToCartBtn: "أضف إلى السلة",
         orderNowBtn: "اطلب الآن",
         cartTitle: "سلة التسوق",
         totalText: "المجموع:",
-        checkoutBtn: "الدفع",
+        checkoutBtn: "إتمام الطلب",
         checkoutTitle: "إتمام الطلب",
         nameLabel: "الاسم الكامل *",
         lastNameLabel: "اللقب *",
         phoneLabel: "رقم الهاتف *",
         wilayaLabel: "الولاية *",
         communeLabel: "البلدية *",
-        addressLabel: "عنوان التسليم *",
-        subtotalLabel: "المجموع الفرعي:",
+        addressLabel: "عنوان التوصيل *",
+        subtotalLabel: "المجموع الجزئي:",
         deliveryLabel: "رسوم التوصيل:",
-        finalTotalLabel: "المجموع:",
+        finalTotalLabel: "المجموع النهائي:",
         paymentTitle: "طرق الدفع",
-        ccpTitle: "🏦 تحويل بريدي",
-        ccpConditions: "⚠️ مهم: ارفع صورة واضحة (غير ممسوحة أو معدلة) لإيصال الدفع. الصور المعدلة أو غير الواضحة سيتم رفضها.",
-        emptyCart: "سلتك فارغة",
-        orderPlaced: "تم تأكيد الطلب بنجاح! سنتواصل معك قريباً.",
+        ccpTitle: "🏦 التحويل البريدي",
+        ccpConditions: "⚠️ مهم: ارفع صورة واضحة لإيصال الدفع. الصور المعدلة أو غير الواضحة سيتم رفضها.",
+        emptyCart: "سلة التسوق فارغة",
+        orderPlaced: "تم تقديم الطلب بنجاح! سنتواصل معك قريباً.",
         selectWilaya: "اختر الولاية",
         paymentUploaded: "تم رفع إثبات الدفع بنجاح!",
-        orderWarning: "⚠️ لن يتم تأكيد طلبك إلا إذا قمت بملء اسمك الكامل ورقم هاتفك بشكل صحيح.",
-        payOnDelivery: "الدفع عند التسليم",
+        orderWarning: "⚠️ لن يتم تأكيد طلبك إلا إذا قمت بملء الاسم الكامل ورقم الهاتف بشكل صحيح.",
+        payOnDelivery: "الدفع عند الاستلام",
         payWithCCP: "الدفع عبر التحويل البريدي"
     },
     fr: {
@@ -102,7 +96,7 @@ const translations = {
         orderNowBtn: "Commander Maintenant",
         cartTitle: "Panier d'Achat",
         totalText: "Total:",
-        checkoutBtn: "Commander",
+        checkoutBtn: "Passer la Commande",
         checkoutTitle: "Finaliser la Commande",
         nameLabel: "Nom Complet *",
         lastNameLabel: "Nom de Famille *",
@@ -112,10 +106,10 @@ const translations = {
         addressLabel: "Adresse de Livraison *",
         subtotalLabel: "Sous-total:",
         deliveryLabel: "Frais de Livraison:",
-        finalTotalLabel: "Total:",
+        finalTotalLabel: "Total Final:",
         paymentTitle: "Méthodes de Paiement",
         ccpTitle: "🏦 Virement CCP",
-        ccpConditions: "⚠️ Important: Téléchargez une photo claire (non scannée ou éditée) de votre reçu de paiement. Les photos éditées ou floues seront rejetées.",
+        ccpConditions: "⚠️ Important: Téléchargez une photo claire de votre reçu de paiement. Les photos modifiées ou floues seront rejetées.",
         emptyCart: "Votre panier est vide",
         orderPlaced: "Commande passée avec succès! Nous vous contacterons bientôt.",
         selectWilaya: "Sélectionner Wilaya",
@@ -127,7 +121,7 @@ const translations = {
 };
 
 // Global state
-let currentLanguage = 'en';
+let currentLanguage = localStorage.getItem('language') || 'en';
 let cart = [];
 let currentProduct = null;
 let selectedColor = '';
@@ -141,24 +135,30 @@ document.addEventListener('DOMContentLoaded', function() {
     loadData();
     setupEventListeners();
     updateLanguage();
+    updateStoreName();
 });
 
 async function loadData() {
     try {
         // Load products from API
         const productsResponse = await fetch('/api/products');
+        if (!productsResponse.ok) throw new Error('Failed to load products');
         products = await productsResponse.json();
         
         // Load wilayas from API
         const wilayasResponse = await fetch('/api/wilayas');
-        wilayas = await wilayasResponse.json();
+        if (!wilayasResponse.ok) throw new Error('Failed to load wilayas');
+        const wilayasData = await wilayasResponse.json();
+        wilayas = wilayasData;
         
         // Load store settings
         const settingsResponse = await fetch('/api/settings');
+        if (!settingsResponse.ok) throw new Error('Failed to load settings');
         storeSettings = await settingsResponse.json();
         
         loadProducts();
         loadWilayas();
+        updateStoreName();
     } catch (error) {
         console.error('Error loading data:', error);
         // Fallback to default data
@@ -171,7 +171,7 @@ function loadDefaultData() {
     products = [
         {
             id: 1,
-            name: { en: "Classic T-Shirt", ar: "تيشيرت كلاسيكي", fr: "T-Shirt Classique" },
+            title: "Classic T-Shirt",
             price: 2500,
             discount: 20,
             stock: 50,
@@ -184,9 +184,9 @@ function loadDefaultData() {
                     description: "Blue T-Shirt front view"
                 }
             ],
-            description: { en: "Comfortable cotton t-shirt perfect for everyday wear", ar: "تيشيرت قطني مريح مثالي للارتداء اليومي", fr: "T-shirt en coton confortable parfait pour un usage quotidien" },
-            colors: ["Blue", "Red", "Black", "White"],
-            sizes: ["S", "M", "L", "XL"]
+            description: "Comfortable cotton t-shirt perfect for everyday wear",
+            colors: "Blue,Red,Black,White",
+            sizes: "S,M,L,XL"
         }
     ];
     
@@ -199,25 +199,45 @@ function loadDefaultData() {
     
     // Default store settings
     storeSettings = {
-        ccpAccount: "0012345678901234567890",
-        storeName: "Best Shop"
+        store_name: "Best Shop",
+        ccp_number: "0012345678",
+        ccp_key: "90",
+        rip: "0012345678901234567890"
     };
     
     loadProducts();
     loadWilayas();
+    updateStoreName();
+}
+
+function updateStoreName() {
+    const storeNameElement = document.getElementById('storeName');
+    if (storeNameElement && storeSettings.store_name) {
+        storeNameElement.textContent = storeSettings.store_name;
+    }
+    
+    // Update account holder name in payment section
+    const accountHolderElement = document.getElementById('accountHolderName');
+    if (accountHolderElement && storeSettings.store_name) {
+        accountHolderElement.textContent = storeSettings.store_name;
+    }
+    
+    // Update CCP account number
+    const ccpAccountElement = document.getElementById('ccpAccountNumber');
+    if (ccpAccountElement && storeSettings.ccp_number && storeSettings.ccp_key) {
+        ccpAccountElement.textContent = `${storeSettings.ccp_number}${storeSettings.ccp_key}`;
+    }
 }
 
 function setupEventListeners() {
     setupBackButtons();
+    
     // Language selector
     document.getElementById('languageSelector').addEventListener('change', function(e) {
         currentLanguage = e.target.value;
+        localStorage.setItem('language', currentLanguage);
         updateLanguage();
-        if (currentLanguage === 'ar') {
-            document.body.classList.add('rtl');
-        } else {
-            document.body.classList.remove('rtl');
-        }
+        loadProducts(); // Reload products with new language
     });
 
     // Navigation
@@ -240,25 +260,40 @@ function setupEventListeners() {
 function updateLanguage() {
     const t = translations[currentLanguage];
     
-    // Update all translatable elements
-    Object.keys(t).forEach(key => {
-        const element = document.getElementById(key);
-        if (element) {
-            if (element.tagName === 'INPUT' && element.type === 'submit') {
+    // Update all elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (t[key]) {
+            if (element.tagName === 'INPUT' && (element.type === 'submit' || element.type === 'button')) {
                 element.value = t[key];
+            } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                element.placeholder = t[key];
             } else {
-                element.innerHTML = t[key];
+                element.textContent = t[key];
             }
         }
     });
 
-    // Update products and wilaya options
-    loadProducts();
-    loadWilayas();
+    // Update RTL
+    if (currentLanguage === 'ar') {
+        document.body.classList.add('rtl');
+        document.body.setAttribute('dir', 'rtl');
+    } else {
+        document.body.classList.remove('rtl');
+        document.body.setAttribute('dir', 'ltr');
+    }
+
+    // Update language selector
+    const langSelector = document.getElementById('languageSelector');
+    if (langSelector) {
+        langSelector.value = currentLanguage;
+    }
 }
 
 function loadProducts() {
     const grid = document.getElementById('productsGrid');
+    if (!grid) return;
+    
     grid.innerHTML = '';
 
     products.forEach(product => {
@@ -269,14 +304,18 @@ function loadProducts() {
         productCard.className = 'product-card bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer relative';
         productCard.innerHTML = `
             ${product.discount > 0 ? `<div class="discount-badge absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold z-10">-${product.discount}%</div>` : ''}
-            <img src="${product.image}" alt="${product.name[currentLanguage]}" class="w-full h-48 object-cover">
+            <img src="${product.media && product.media.length > 0 ? product.media[0].url : product.image}" 
+                 alt="${product.title}" 
+                 class="w-full h-48 object-cover">
             <div class="p-4">
-                <h4 class="font-semibold text-lg mb-2">${product.name[currentLanguage]}</h4>
+                <h4 class="font-semibold text-lg mb-2">${product.title}</h4>
                 <div class="flex items-center space-x-2">
                     <p class="text-indigo-600 font-bold text-xl">${discountedPrice} DA</p>
                     ${product.discount > 0 ? `<p class="text-gray-500 line-through text-sm">${product.price} DA</p>` : ''}
                 </div>
                 <p class="text-sm text-gray-500 mt-1">${product.stock} in stock</p>
+                ${product.colors ? `<p class="text-sm text-gray-600 mt-1">Colors: ${product.colors}</p>` : ''}
+                ${product.sizes ? `<p class="text-sm text-gray-600">Sizes: ${product.sizes}</p>` : ''}
             </div>
         `;
         productCard.addEventListener('click', () => showProductDetails(product));
@@ -286,6 +325,8 @@ function loadProducts() {
 
 function loadWilayas() {
     const select = document.getElementById('wilayaSelect');
+    if (!select) return;
+    
     const currentValue = select.value;
     select.innerHTML = `<option value="">${translations[currentLanguage].selectWilaya}</option>`;
     
@@ -310,9 +351,9 @@ function showProductDetails(product) {
     // Load product media
     loadProductMedia(product);
     
-    document.getElementById('productDetailName').textContent = product.name[currentLanguage];
+    document.getElementById('productDetailName').textContent = product.title;
     document.getElementById('productDetailPrice').textContent = `${discountedPrice} DA`;
-    document.getElementById('productDetailDescription').textContent = product.description[currentLanguage];
+    document.getElementById('productDetailDescription').textContent = product.description;
     document.getElementById('stockInfo').textContent = `${product.stock} available in stock`;
     
     // Show/hide discount elements
@@ -332,25 +373,33 @@ function showProductDetails(product) {
     // Load colors
     const colorOptions = document.getElementById('colorOptions');
     colorOptions.innerHTML = '';
-    product.colors.forEach(color => {
-        const colorBtn = document.createElement('button');
-        colorBtn.className = 'color-bubble w-8 h-8 rounded-full border-2 border-gray-300 hover:border-indigo-500';
-        colorBtn.style.backgroundColor = getColorCode(color);
-        colorBtn.setAttribute('data-color', color);
-        colorBtn.addEventListener('click', () => selectColor(color, colorBtn));
-        colorOptions.appendChild(colorBtn);
-    });
+    if (product.colors) {
+        const colorsArray = product.colors.split(',').map(c => c.trim());
+        colorsArray.forEach(color => {
+            const colorBtn = document.createElement('button');
+            colorBtn.type = 'button';
+            colorBtn.className = 'color-bubble w-8 h-8 rounded-full border-2 border-gray-300 hover:border-indigo-500 transition-colors';
+            colorBtn.style.backgroundColor = getColorCode(color);
+            colorBtn.setAttribute('data-color', color);
+            colorBtn.addEventListener('click', () => selectColor(color, colorBtn));
+            colorOptions.appendChild(colorBtn);
+        });
+    }
     
     // Load sizes
     const sizeOptions = document.getElementById('sizeOptions');
     sizeOptions.innerHTML = '';
-    product.sizes.forEach(size => {
-        const sizeBtn = document.createElement('button');
-        sizeBtn.className = 'px-3 py-1 border border-gray-300 rounded hover:border-indigo-500 hover:bg-indigo-50';
-        sizeBtn.textContent = size;
-        sizeBtn.addEventListener('click', () => selectSize(size, sizeBtn));
-        sizeOptions.appendChild(sizeBtn);
-    });
+    if (product.sizes) {
+        const sizesArray = product.sizes.split(',').map(s => s.trim());
+        sizesArray.forEach(size => {
+            const sizeBtn = document.createElement('button');
+            sizeBtn.type = 'button';
+            sizeBtn.className = 'px-3 py-1 border border-gray-300 rounded hover:border-indigo-500 hover:bg-indigo-50 transition-colors';
+            sizeBtn.textContent = size;
+            sizeBtn.addEventListener('click', () => selectSize(size, sizeBtn));
+            sizeOptions.appendChild(sizeBtn);
+        });
+    }
     
     document.getElementById('quantity').textContent = '1';
     showPage('productDetails');
@@ -375,7 +424,7 @@ function loadProductMedia(product) {
         // Create thumbnails
         product.media.forEach((media, index) => {
             const thumbnail = document.createElement('div');
-            thumbnail.className = 'media-thumbnail flex-shrink-0 w-16 h-16 cursor-pointer border-2 border-transparent hover:border-indigo-500 rounded';
+            thumbnail.className = 'media-thumbnail flex-shrink-0 w-16 h-16 cursor-pointer border-2 border-transparent hover:border-indigo-500 rounded transition-colors';
             
             if (media.type === 'image') {
                 thumbnail.innerHTML = `<img src="${media.url}" alt="${media.description}" class="w-full h-full object-cover rounded">`;
@@ -406,36 +455,49 @@ function loadProductMedia(product) {
         });
     } else {
         // Default image if no media
-        gallery.innerHTML = `<img src="${product.image}" alt="${product.name[currentLanguage]}" class="w-full h-96 object-cover rounded-lg">`;
+        gallery.innerHTML = `<img src="${product.image}" alt="${product.title}" class="w-full h-96 object-cover rounded-lg">`;
     }
 }
 
 function getColorCode(color) {
     const colors = {
-        'Blue': '#3b82f6',
-        'Red': '#ef4444',
-        'Black': '#000000',
-        'White': '#ffffff',
-        'Dark Blue': '#1e40af',
-        'Light Blue': '#60a5fa',
-        'Pink': '#ec4899',
-        'Yellow': '#eab308',
-        'Green': '#10b981',
-        'Gray': '#6b7280',
-        'Navy': '#1e3a8a'
+        'blue': '#3b82f6',
+        'red': '#ef4444',
+        'black': '#000000',
+        'white': '#ffffff',
+        'green': '#10b981',
+        'yellow': '#eab308',
+        'purple': '#8b5cf6',
+        'pink': '#ec4899',
+        'gray': '#6b7280',
+        'orange': '#f97316',
+        'أزرق': '#3b82f6',
+        'أحمر': '#ef4444',
+        'أسود': '#000000',
+        'أبيض': '#ffffff',
+        'أخضر': '#10b981',
+        'أصفر': '#eab308',
+        'بنفسجي': '#8b5cf6',
+        'وردي': '#ec4899',
+        'رمادي': '#6b7280',
+        'برتقالي': '#f97316'
     };
-    return colors[color] || '#6b7280';
+    return colors[color.toLowerCase()] || '#6b7280';
 }
 
 function selectColor(color, btn) {
     selectedColor = color;
-    document.querySelectorAll('#colorOptions button').forEach(b => b.classList.remove('ring-2', 'ring-indigo-500'));
+    document.querySelectorAll('#colorOptions button').forEach(b => {
+        b.classList.remove('ring-2', 'ring-indigo-500');
+    });
     btn.classList.add('ring-2', 'ring-indigo-500');
 }
 
 function selectSize(size, btn) {
     selectedSize = size;
-    document.querySelectorAll('#sizeOptions button').forEach(b => b.classList.remove('bg-indigo-500', 'text-white'));
+    document.querySelectorAll('#sizeOptions button').forEach(b => {
+        b.classList.remove('bg-indigo-500', 'text-white');
+    });
     btn.classList.add('bg-indigo-500', 'text-white');
 }
 
@@ -443,13 +505,18 @@ function changeQuantity(delta) {
     const qtyElement = document.getElementById('quantity');
     let qty = parseInt(qtyElement.textContent) + delta;
     if (qty < 1) qty = 1;
-    if (qty > currentProduct.stock) qty = currentProduct.stock;
+    if (currentProduct && qty > currentProduct.stock) qty = currentProduct.stock;
     qtyElement.textContent = qty;
 }
 
 function validateProductSelection() {
-    if (!selectedColor || !selectedSize) {
-        alert('Please select color and size');
+    if (!selectedColor && currentProduct.colors) {
+        alert('Please select color');
+        return false;
+    }
+    
+    if (!selectedSize && currentProduct.sizes) {
+        alert('Please select size');
         return false;
     }
     
@@ -459,7 +526,7 @@ function validateProductSelection() {
         return false;
     }
     
-    if (quantity > currentProduct.stock) {
+    if (currentProduct && quantity > currentProduct.stock) {
         alert(`Only ${currentProduct.stock} items available in stock`);
         return false;
     }
@@ -482,6 +549,7 @@ function addToCart() {
     cart.push(cartItem);
     updateCartCount();
     showHomepage();
+    alert('Product added to cart!');
 }
 
 function orderNow() {
@@ -533,10 +601,12 @@ function showCart() {
             cartItem.className = 'flex items-center justify-between border-b pb-4 mb-4';
             cartItem.innerHTML = `
                 <div class="flex items-center space-x-4">
-                    <img src="${item.product.image}" alt="${item.product.name[currentLanguage]}" class="w-16 h-16 object-cover rounded">
+                    <img src="${item.product.media && item.product.media.length > 0 ? item.product.media[0].url : item.product.image}" 
+                         alt="${item.product.title}" 
+                         class="w-16 h-16 object-cover rounded">
                     <div>
-                        <h4 class="font-semibold">${item.product.name[currentLanguage]}</h4>
-                        <p class="text-sm text-gray-600">${item.color} - ${item.size}</p>
+                        <h4 class="font-semibold">${item.product.title}</h4>
+                        <p class="text-sm text-gray-600">${item.color || 'No color'} - ${item.size || 'No size'}</p>
                         <p class="text-sm text-gray-600">Qty: ${item.quantity}</p>
                         ${item.product.discount > 0 ? `<span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">-${item.product.discount}%</span>` : ''}
                     </div>
@@ -563,7 +633,7 @@ function removeFromCart(index) {
 
 function showCheckout() {
     if (cart.length === 0) {
-        alert('Your cart is empty');
+        alert(translations[currentLanguage].emptyCart);
         return;
     }
     
@@ -587,7 +657,7 @@ function updateDeliveryFee() {
             Math.round(item.product.price * (1 - item.product.discount / 100)) : item.product.price;
         return sum + (discountedPrice * item.quantity);
     }, 0);
-    const deliveryFee = wilaya ? wilayas[wilaya] : 0;
+    const deliveryFee = wilaya ? (wilayas[wilaya] || 0) : 0;
     const total = subtotal + deliveryFee;
     
     document.getElementById('deliveryFee').textContent = `${deliveryFee} DA`;
@@ -595,22 +665,22 @@ function updateDeliveryFee() {
 }
 
 function validateCheckoutForm() {
-    const name = document.getElementById('customerName').value;
-    const lastName = document.getElementById('customerLastName').value;
-    const phone = document.getElementById('customerPhone').value;
+    const name = document.getElementById('customerName').value.trim();
+    const lastName = document.getElementById('customerLastName').value.trim();
+    const phone = document.getElementById('customerPhone').value.trim();
     const wilaya = document.getElementById('wilayaSelect').value;
-    const commune = document.getElementById('customerCommune').value;
-    const address = document.getElementById('customerAddress').value;
+    const commune = document.getElementById('customerCommune').value.trim();
+    const address = document.getElementById('customerAddress').value.trim();
     
     if (!name || !lastName || !phone || !wilaya || !commune || !address) {
         alert('Please fill all required fields');
         return false;
     }
     
-    // Simple phone validation
+    // Simple phone validation for Algeria
     const phoneRegex = /^(\+213|0)(5|6|7)[0-9]{8}$/;
     if (!phoneRegex.test(phone)) {
-        alert('Please enter a valid Algerian phone number');
+        alert('Please enter a valid Algerian phone number (e.g., 0551234567 or +213551234567)');
         return false;
     }
     
@@ -620,25 +690,38 @@ function validateCheckoutForm() {
 async function payOnDelivery() {
     if (!validateCheckoutForm()) return;
     
+    const subtotal = cart.reduce((sum, item) => {
+        const discountedPrice = item.product.discount > 0 ? 
+            Math.round(item.product.price * (1 - item.product.discount / 100)) : item.product.price;
+        return sum + (discountedPrice * item.quantity);
+    }, 0);
+    
+    const wilaya = document.getElementById('wilayaSelect').value;
+    const deliveryFee = wilaya ? (wilayas[wilaya] || 0) : 0;
+    const total = subtotal + deliveryFee;
+    
     const orderData = {
-        id: Date.now(),
-        customer: {
-            name: document.getElementById('customerName').value,
-            lastName: document.getElementById('customerLastName').value,
-            phone: document.getElementById('customerPhone').value,
-            wilaya: document.getElementById('wilayaSelect').value,
-            commune: document.getElementById('customerCommune').value,
-            address: document.getElementById('customerAddress').value
-        },
-        items: [...cart],
-        total: document.getElementById('finalTotal').textContent,
-        paymentMethod: 'Cash on Delivery',
-        date: new Date().toLocaleDateString(),
-        status: 'Pending'
+        items: cart.map(item => ({
+            product_id: item.product.id,
+            name: item.product.title,
+            price: item.product.price,
+            discount: item.product.discount,
+            qty: item.quantity,
+            color: item.color,
+            size: item.size
+        })),
+        customer_name: document.getElementById('customerName').value.trim() + ' ' + document.getElementById('customerLastName').value.trim(),
+        customer_email: '',
+        customer_phone: document.getElementById('customerPhone').value.trim(),
+        customer_address: document.getElementById('customerAddress').value.trim(),
+        wilaya: wilaya,
+        commune: document.getElementById('customerCommune').value.trim(),
+        payment_method: 'Cash on Delivery',
+        total: total,
+        status: 'pending'
     };
     
     try {
-        // Send order to API
         const response = await fetch('/api/orders', {
             method: 'POST',
             headers: {
@@ -648,6 +731,7 @@ async function payOnDelivery() {
         });
         
         if (response.ok) {
+            const newOrder = await response.json();
             alert(translations[currentLanguage].orderPlaced);
             
             // Clear cart and redirect to homepage
@@ -655,11 +739,12 @@ async function payOnDelivery() {
             updateCartCount();
             showHomepage();
         } else {
-            throw new Error('Failed to place order');
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to place order');
         }
     } catch (error) {
         console.error('Error placing order:', error);
-        alert('Error placing order. Please try again.');
+        alert('Error placing order: ' + error.message);
     }
 }
 
@@ -667,24 +752,39 @@ function payWithCCP() {
     if (!validateCheckoutForm()) return;
     
     // Show CCP payment page
-    document.getElementById('ccpAccountNumber').textContent = storeSettings.ccpAccount;
+    document.getElementById('ccpAccountNumber').textContent = storeSettings.ccp_number + storeSettings.ccp_key;
     showPage('paymentPage');
     
     // Store order data temporarily for after payment
+    const subtotal = cart.reduce((sum, item) => {
+        const discountedPrice = item.product.discount > 0 ? 
+            Math.round(item.product.price * (1 - item.product.discount / 100)) : item.product.price;
+        return sum + (discountedPrice * item.quantity);
+    }, 0);
+    
+    const wilaya = document.getElementById('wilayaSelect').value;
+    const deliveryFee = wilaya ? (wilayas[wilaya] || 0) : 0;
+    const total = subtotal + deliveryFee;
+    
     window.pendingOrder = {
-        customer: {
-            name: document.getElementById('customerName').value,
-            lastName: document.getElementById('customerLastName').value,
-            phone: document.getElementById('customerPhone').value,
-            wilaya: document.getElementById('wilayaSelect').value,
-            commune: document.getElementById('customerCommune').value,
-            address: document.getElementById('customerAddress').value
-        },
-        items: [...cart],
-        total: document.getElementById('finalTotal').textContent,
-        paymentMethod: 'CCP',
-        date: new Date().toLocaleDateString(),
-        status: 'Pending Payment'
+        items: cart.map(item => ({
+            product_id: item.product.id,
+            name: item.product.title,
+            price: item.product.price,
+            discount: item.product.discount,
+            qty: item.quantity,
+            color: item.color,
+            size: item.size
+        })),
+        customer_name: document.getElementById('customerName').value.trim() + ' ' + document.getElementById('customerLastName').value.trim(),
+        customer_email: '',
+        customer_phone: document.getElementById('customerPhone').value.trim(),
+        customer_address: document.getElementById('customerAddress').value.trim(),
+        wilaya: wilaya,
+        commune: document.getElementById('customerCommune').value.trim(),
+        payment_method: 'CCP',
+        total: total,
+        status: 'pending_payment'
     };
 }
 
@@ -697,38 +797,55 @@ async function uploadPaymentProof(method) {
         return;
     }
     
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+    }
+    
     // For CCP payment, complete the order
     if (method === 'ccp' && window.pendingOrder) {
         try {
-            // Create FormData for file upload
-            const formData = new FormData();
-            formData.append('paymentProof', file);
-            formData.append('orderData', JSON.stringify({
-                ...window.pendingOrder,
-                id: Date.now(),
-                status: 'Pending Confirmation'
-            }));
-            
-            // Send order with payment proof
-            const response = await fetch('/api/orders', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (response.ok) {
-                // Clear cart and pending order
-                cart = [];
-                updateCartCount();
-                window.pendingOrder = null;
-                
-                alert(translations[currentLanguage].paymentUploaded);
-                showHomepage();
-            } else {
-                throw new Error('Failed to upload payment proof');
-            }
+            // Convert file to base64 for upload
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    // Create FormData for file upload
+                    const formData = new FormData();
+                    formData.append('paymentProof', file);
+                    formData.append('orderData', JSON.stringify({
+                        ...window.pendingOrder,
+                        id: Date.now().toString(),
+                        status: 'pending_confirmation'
+                    }));
+                    
+                    // Send order with payment proof
+                    const response = await fetch('/api/orders', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (response.ok) {
+                        // Clear cart and pending order
+                        cart = [];
+                        updateCartCount();
+                        window.pendingOrder = null;
+                        
+                        alert(translations[currentLanguage].paymentUploaded);
+                        showHomepage();
+                    } else {
+                        const error = await response.json();
+                        throw new Error(error.message || 'Failed to upload payment proof');
+                    }
+                } catch (error) {
+                    console.error('Error uploading payment proof:', error);
+                    alert('Error uploading payment proof: ' + error.message);
+                }
+            };
+            reader.readAsDataURL(file);
         } catch (error) {
-            console.error('Error uploading payment proof:', error);
-            alert('Error uploading payment proof. Please try again.');
+            console.error('Error processing payment:', error);
+            alert('Error processing payment. Please try again.');
         }
     }
 }
@@ -739,11 +856,12 @@ function showHomepage() {
 
 function showPage(pageId) {
     document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
-    document.getElementById(pageId).classList.remove('hidden');
-    document.getElementById(pageId).classList.add('fade-in');
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.classList.remove('hidden');
+        targetPage.classList.add('fade-in');
+    }
 }
-
-
 
 // تحسين التنقل - إضافة زر Back في كل الصفحات
 function setupBackButtons() {
@@ -752,22 +870,45 @@ function setupBackButtons() {
     
     // زر Back في صفحة السلة
     const backFromCart = document.createElement('button');
-    backFromCart.innerHTML = '← <span id="backText">Back to Products</span>';
+    backFromCart.innerHTML = '← <span data-i18n="backText">Back to Products</span>';
     backFromCart.className = 'mb-6 text-indigo-600 hover:text-indigo-800 flex items-center';
     backFromCart.addEventListener('click', showHomepage);
-    document.getElementById('cartPage').insertBefore(backFromCart, document.getElementById('cartPage').firstChild);
+    const cartPage = document.getElementById('cartPage');
+    if (cartPage) {
+        cartPage.insertBefore(backFromCart, cartPage.firstChild);
+    }
     
     // زر Back في صفحة الدفع
     const backFromCheckout = document.createElement('button');
-    backFromCheckout.innerHTML = '← <span id="backText">Back to Cart</span>';
+    backFromCheckout.innerHTML = '← <span data-i18n="backText">Back to Cart</span>';
     backFromCheckout.className = 'mb-6 text-indigo-600 hover:text-indigo-800 flex items-center';
     backFromCheckout.addEventListener('click', showCart);
-    document.getElementById('checkoutPage').insertBefore(backFromCheckout, document.getElementById('checkoutPage').firstChild);
+    const checkoutPage = document.getElementById('checkoutPage');
+    if (checkoutPage) {
+        checkoutPage.insertBefore(backFromCheckout, checkoutPage.firstChild);
+    }
     
     // زر Back في صفحة الدفع
     const backFromPayment = document.createElement('button');
-    backFromPayment.innerHTML = '← <span id="backText">Back to Checkout</span>';
+    backFromPayment.innerHTML = '← <span data-i18n="backText">Back to Checkout</span>';
     backFromPayment.className = 'mb-6 text-indigo-600 hover:text-indigo-800 flex items-center';
     backFromPayment.addEventListener('click', showCheckout);
-    document.getElementById('paymentPage').insertBefore(backFromPayment, document.getElementById('paymentPage').firstChild);
+    const paymentPage = document.getElementById('paymentPage');
+    if (paymentPage) {
+        paymentPage.insertBefore(backFromPayment, paymentPage.firstChild);
+    }
 }
+
+// Export functions for HTML
+window.showHomepage = showHomepage;
+window.showCart = showCart;
+window.showCheckout = showCheckout;
+window.addToCart = addToCart;
+window.orderNow = orderNow;
+window.removeFromCart = removeFromCart;
+window.payOnDelivery = payOnDelivery;
+window.payWithCCP = payWithCCP;
+window.uploadPaymentProof = uploadPaymentProof;
+window.changeQuantity = changeQuantity;
+window.selectColor = selectColor;
+window.selectSize = selectSize;
