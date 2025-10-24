@@ -173,34 +173,67 @@ function updateLanguage() {
     }
 }
 
+
 async function loadDashboardData() {
     try {
         const token = localStorage.getItem('adminToken');
         
+        console.log('Loading dashboard data...');
+        
         // Load all data in parallel
         const [productsRes, ordersRes, wilayasRes, settingsRes] = await Promise.all([
-            fetch('/api/products', { headers: { 'Authorization': `Bearer ${token}` } }),
-            fetch('/api/orders', { headers: { 'Authorization': `Bearer ${token}` } }),
-            fetch('/api/wilayas', { headers: { 'Authorization': `Bearer ${token}` } }),
-            fetch('/api/settings', { headers: { 'Authorization': `Bearer ${token}` } })
+            fetch('/api/products', { 
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                } 
+            }),
+            fetch('/api/orders', { 
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                } 
+            }),
+            fetch('/api/wilayas', { 
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                } 
+            }),
+            fetch('/api/settings', { 
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                } 
+            })
         ]);
 
-        if (!productsRes.ok) throw new Error('Failed to load products');
-        if (!ordersRes.ok) throw new Error('Failed to load orders');
-        if (!wilayasRes.ok) throw new Error('Failed to load wilayas');
-        if (!settingsRes.ok) throw new Error('Failed to load settings');
+        // Check if responses are OK
+        if (!productsRes.ok) throw new Error(`Products API error: ${productsRes.status}`);
+        if (!ordersRes.ok) throw new Error(`Orders API error: ${ordersRes.status}`);
+        if (!wilayasRes.ok) throw new Error(`Wilayas API error: ${wilayasRes.status}`);
+        if (!settingsRes.ok) throw new Error(`Settings API error: ${settingsRes.status}`);
 
         products = await productsRes.json();
         orders = await ordersRes.json();
         wilayas = await wilayasRes.json();
         storeSettings = await settingsRes.json();
         
+        console.log('Data loaded successfully:', { 
+            products: products.length, 
+            orders: orders.length,
+            wilayas: Object.keys(wilayas).length,
+            settings: storeSettings 
+        });
+        
         updateDashboard();
     } catch (error) {
         console.error('Error loading dashboard data:', error);
-        alert('Error loading data. Please check your connection.');
+        alert('Error loading data: ' + error.message);
     }
-}
+}  
+
+
 
 function setupEventListeners() {
     // Add product form
@@ -417,10 +450,445 @@ function logout() {
     localStorage.removeItem('language');
     window.location.href = 'auth.html';
 }
+// دوال إدارة الوسائط
+function loadMediaGallery() {
+    const productSelect = document.getElementById('mediaProductSelect');
+    const gallery = document.getElementById('mediaGallery');
+    
+    if (!productSelect || !gallery) return;
+    
+    // Update product select
+    productSelect.innerHTML = '<option value="">Select a product</option>';
+    products.forEach(product => {
+        const option = document.createElement('option');
+        option.value = product.id;
+        option.textContent = product.title;
+        productSelect.appendChild(option);
+    });
+    
+    // Load media gallery
+    gallery.innerHTML = '';
+    
+    // Show all media from all products
+    products.forEach(product => {
+        if (product.media && product.media.length > 0) {
+            product.media.forEach(media => {
+                const mediaItem = document.createElement('div');
+                mediaItem.className = 'media-item bg-gray-100 rounded-lg';
+                
+                if (media.type === 'image') {
+                    mediaItem.innerHTML = `
+                        <img src="${media.url}" alt="${media.description}" class="w-full h-32 object-cover">
+                        <div class="media-actions">
+                            <button onclick="deleteMedia('${product.id}', '${media.id}')" class="bg-red-500 text-white p-1 rounded text-xs">Delete</button>
+                        </div>
+                        <div class="p-2 text-xs text-gray-600">${product.title} - ${media.description || 'No description'}</div>
+                    `;
+                } else {
+                    mediaItem.innerHTML = `
+                        <video src="${media.url}" class="w-full h-32 object-cover" controls></video>
+                        <div class="media-actions">
+                            <button onclick="deleteMedia('${product.id}', '${media.id}')" class="bg-red-500 text-white p-1 rounded text-xs">Delete</button>
+                        </div>
+                        <div class="p-2 text-xs text-gray-600">${product.title} - ${media.description || 'No description'}</div>
+                    `;
+                }
+                
+                gallery.appendChild(mediaItem);
+            });
+        }
+    });
+    
+    if (gallery.innerHTML === '') {
+        gallery.innerHTML = '<p class="text-gray-500 text-center py-8">No media uploaded yet</p>';
+    }
+}
+
+async function addMedia() {
+    const productId = document.getElementById('mediaProductSelect').value;
+    const mediaType = document.getElementById('mediaTypeSelect').value;
+    const description = document.getElementById('mediaDescription').value;
+    const fileInput = document.getElementById('mediaUpload');
+    const file = fileInput.files[0];
+    
+    if (!productId) {
+        alert('Please select a product');
+        return;
+    }
+    
+    if (!file) {
+        alert('Please select a file to upload');
+        return;
+    }
+    
+    try {
+        const token = localStorage.getItem('adminToken');
+        const formData = new FormData();
+        formData.append('productId', productId);
+        formData.append('type', mediaType);
+        formData.append('description', description);
+        formData.append('file', file);
+        
+        const response = await fetch(`/api/products/${productId}/media`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData
+        });
+        
+        if (response.ok) {
+            const updatedProduct = await response.json();
+            // Update the product in our local array
+            const index = products.findIndex(p => p.id === productId);
+            if (index !== -1) {
+                products[index] = updatedProduct;
+            }
+            
+            loadMediaGallery();
+            
+            // Reset form
+            fileInput.value = '';
+            document.getElementById('mediaDescription').value = '';
+            
+            alert('Media added successfully!');
+        } else {
+            throw new Error('Failed to add media');
+        }
+    } catch (error) {
+        console.error('Error adding media:', error);
+        alert('Error adding media. Please try again.');
+    }
+}
+
+async function deleteMedia(productId, mediaId) {
+    if (!confirm('Are you sure you want to delete this media?')) return;
+    
+    try {
+        const token = localStorage.getItem('adminToken');
+        const response = await fetch(`/api/products/${productId}/media/${mediaId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (response.ok) {
+            const product = products.find(p => p.id === productId);
+            if (product && product.media) {
+                product.media = product.media.filter(m => m.id !== mediaId);
+            }
+            loadMediaGallery();
+            alert('Media deleted successfully!');
+        } else {
+            throw new Error('Failed to delete media');
+        }
+    } catch (error) {
+        console.error('Error deleting media:', error);
+        alert('Error deleting media. Please try again.');
+    }
+}
+
+// أضف هذه الدوال للتصدير
+window.addMedia = addMedia;
+window.deleteMedia = deleteMedia; 
 
 // Export for HTML
 window.showTab = showTab;
 window.logout = logout;
+window.addWilaya = addWilaya;
+window.updateWilayaFee = updateWilayaFee;
+window.removeWilaya = removeWilaya;
+window.updateCCPAccount = updateCCPAccount;
+window.updateStoreSettings = updateStoreSettings;
+window.viewOrderDetails = viewOrderDetails;
+window.closeOrderDetails = closeOrderDetails;
+window.updateOrderStatus = updateOrderStatus;
+
+
+// دوال إدارة الولايات
+async function addWilaya() {
+    const newWilaya = document.getElementById('newWilaya').value;
+    const newFee = parseInt(document.getElementById('newWilayaFee').value);
+    
+    if (!newWilaya || isNaN(newFee)) {
+        alert('Please enter both wilaya name and fee');
+        return;
+    }
+    
+    if (wilayas[newWilaya]) {
+        alert('This wilaya already exists');
+        return;
+    }
+    
+    try {
+        const token = localStorage.getItem('adminToken');
+        const response = await fetch('/api/wilayas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ wilaya: newWilaya, fee: newFee })
+        });
+        
+        if (response.ok) {
+            wilayas[newWilaya] = newFee;
+            loadDeliveryFees();
+            
+            // Reset form
+            document.getElementById('newWilaya').value = '';
+            document.getElementById('newWilayaFee').value = '';
+            
+            alert('Wilaya added successfully!');
+        } else {
+            throw new Error('Failed to add wilaya');
+        }
+    } catch (error) {
+        console.error('Error adding wilaya:', error);
+        alert('Error adding wilaya. Please try again.');
+    }
+}
+
+async function updateWilayaFee(wilaya, newFee) {
+    try {
+        const token = localStorage.getItem('adminToken');
+        const response = await fetch('/api/wilayas', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ wilaya, fee: parseInt(newFee) })
+        });
+        
+        if (response.ok) {
+            wilayas[wilaya] = parseInt(newFee);
+            alert('Delivery fee updated successfully!');
+        } else {
+            throw new Error('Failed to update delivery fee');
+        }
+    } catch (error) {
+        console.error('Error updating delivery fee:', error);
+        alert('Error updating delivery fee. Please try again.');
+    }
+}
+
+async function removeWilaya(wilaya) {
+    if (!confirm(`Are you sure you want to remove ${wilaya}?`)) return;
+    
+    try {
+        const token = localStorage.getItem('adminToken');
+        const response = await fetch('/api/wilayas', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ wilaya })
+        });
+        
+        if (response.ok) {
+            delete wilayas[wilaya];
+            loadDeliveryFees();
+            alert('Wilaya removed successfully!');
+        } else {
+            throw new Error('Failed to remove wilaya');
+        }
+    } catch (error) {
+        console.error('Error removing wilaya:', error);
+        alert('Error removing wilaya. Please try again.');
+    }
+}
+
+// دالة تحميل رسوم التوصيل
+function loadDeliveryFees() {
+    const container = document.getElementById('deliveryFeesList');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    Object.entries(wilayas).forEach(([wilaya, fee]) => {
+        const deliveryItem = document.createElement('div');
+        deliveryItem.className = 'flex justify-between items-center p-3 border rounded-lg bg-white';
+        deliveryItem.innerHTML = `
+            <span class="font-medium">${wilaya}</span>
+            <div class="flex items-center space-x-2">
+                <input type="number" value="${fee}" onchange="updateWilayaFee('${wilaya}', this.value)" 
+                       class="w-24 border rounded px-2 py-1 text-sm">
+                <button onclick="removeWilaya('${wilaya}')" class="text-red-500 hover:text-red-700 text-sm">
+                    Remove
+                </button>
+            </div>
+        `;
+        container.appendChild(deliveryItem);
+    });
+}
+
+// دوال الإعدادات
+function loadSettings() {
+    document.getElementById('storeNameInput').value = storeSettings.store_name || '';
+    document.getElementById('storeEmailInput').value = storeSettings.email || '';
+    document.getElementById('storePhoneInput').value = storeSettings.phone || '';
+    document.getElementById('ccpAccountInput').value = storeSettings.ccp_number || '';
+}
+
+async function updateStoreSettings() {
+    const settings = {
+        store_name: document.getElementById('storeNameInput').value,
+        email: document.getElementById('storeEmailInput').value,
+        phone: document.getElementById('storePhoneInput').value
+    };
+    
+    try {
+        const token = localStorage.getItem('adminToken');
+        const response = await fetch('/api/settings', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(settings)
+        });
+        
+        if (response.ok) {
+            Object.assign(storeSettings, settings);
+            alert('Store settings updated successfully!');
+        } else {
+            throw new Error('Failed to update store settings');
+        }
+    } catch (error) {
+        console.error('Error updating store settings:', error);
+        alert('Error updating store settings. Please try again.');
+    }
+}
+
+async function updateCCPAccount() {
+    const newAccount = document.getElementById('ccpAccountInput').value;
+    
+    try {
+        const token = localStorage.getItem('adminToken');
+        const response = await fetch('/api/settings', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ ccp_number: newAccount })
+        });
+        
+        if (response.ok) {
+            storeSettings.ccp_number = newAccount;
+            alert('CCP account updated successfully!');
+        } else {
+            throw new Error('Failed to update CCP account');
+        }
+    } catch (error) {
+        console.error('Error updating CCP account:', error);
+        alert('Error updating CCP account. Please try again.');
+    }
+}
+
+// دوال إدارة الطلبات
+function viewOrderDetails(orderId) {
+    const order = orders.find(o => o.id === orderId);
+    if (!order) return;
+    
+    const modalContent = document.getElementById('orderDetailsContent');
+    modalContent.innerHTML = `
+        <div class="mb-4">
+            <h4 class="font-semibold">Order #${order.id.slice(-8)}</h4>
+            <p class="text-sm text-gray-600">Date: ${new Date(order.created_at).toLocaleDateString()}</p>
+            <p class="text-sm text-gray-600">Status: ${order.status}</p>
+        </div>
+        
+        <div class="mb-4">
+            <h4 class="font-semibold">Customer Information</h4>
+            <p class="text-sm">${order.customer_name}</p>
+            <p class="text-sm">Phone: ${order.customer_phone}</p>
+            <p class="text-sm">Address: ${order.customer_address}, ${order.commune}, ${order.wilaya}</p>
+        </div>
+        
+        <div class="mb-4">
+            <h4 class="font-semibold">Order Items</h4>
+            <div class="space-y-2 mt-2">
+                ${order.items.map(item => `
+                    <div class="flex justify-between border-b pb-2">
+                        <div>
+                            <p class="font-medium">${item.name}</p>
+                            <p class="text-sm text-gray-600">${item.color || ''} ${item.size || ''} - Qty: ${item.qty}</p>
+                        </div>
+                        <p class="font-medium">${item.discount > 0 ? 
+                            Math.round(item.price * (1 - item.discount / 100)) * item.qty : 
+                            item.price * item.qty} DA</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        
+        <div class="mb-4">
+            <h4 class="font-semibold">Payment Information</h4>
+            <p class="text-sm">Method: ${order.payment_method}</p>
+            <p class="text-sm font-bold">Total: ${order.total} DA</p>
+        </div>
+        
+        ${order.payment_proof ? `
+        <div class="mb-4">
+            <h4 class="font-semibold">Payment Proof</h4>
+            <img src="${order.payment_proof}" alt="Payment Proof" class="max-w-full h-auto border rounded max-h-48">
+        </div>
+        ` : ''}
+        
+        <div class="flex space-x-2 mt-4">
+            <button onclick="updateOrderStatus('${order.id}', 'confirmed')" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                Confirm Order
+            </button>
+            <button onclick="updateOrderStatus('${order.id}', 'shipped')" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Mark as Shipped
+            </button>
+            <button onclick="updateOrderStatus('${order.id}', 'cancelled')" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                Cancel Order
+            </button>
+        </div>
+    `;
+    
+    document.getElementById('orderDetailsModal').classList.remove('hidden');
+}
+
+function closeOrderDetails() {
+    document.getElementById('orderDetailsModal').classList.add('hidden');
+}
+
+async function updateOrderStatus(orderId, status) {
+    try {
+        const token = localStorage.getItem('adminToken');
+        const response = await fetch(`/api/orders?id=${orderId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ status })
+        });
+        
+        if (response.ok) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = status;
+            }
+            closeOrderDetails();
+            loadOrdersTable();
+            alert('Order status updated successfully!');
+        } else {
+            throw new Error('Failed to update order status');
+        }
+    } catch (error) {
+        console.error('Error updating order status:', error);
+        alert('Error updating order status. Please try again.');
+    }
+}
+
+// تأكد من تصدير جميع الدوال للاستخدام في HTML
 window.addWilaya = addWilaya;
 window.updateWilayaFee = updateWilayaFee;
 window.removeWilaya = removeWilaya;
