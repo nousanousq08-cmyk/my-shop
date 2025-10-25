@@ -2,11 +2,11 @@
 
 // 🔗 روابط APIs
 const API_BASE_URL = 'https://apkogwpcpshvttuqcuxy.supabase.co'; // ضع رابط Supabase هنا
-const API_PRODUCTS = '/api/products';
-const API_PRODUCT_MEDIA = '/api/products/:id/media';
-const API_ORDERS = '/api/orders'; 
-const API_WILAYAS = '/api/wilayas';
-const API_SETTINGS = '/api/settings';
+const API_PRODUCTS = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/products';
+const API_PRODUCT_MEDIA = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/products/:id/media';
+const API_ORDERS = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/orders'; 
+const API_WILAYAS = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/wilayas';
+const API_SETTINGS = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/settings';
 
 
 

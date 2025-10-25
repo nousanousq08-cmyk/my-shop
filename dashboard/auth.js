@@ -1,8 +1,8 @@
  // 🔗 روابط APIs المصادقة
 const API_BASE_URL = 'https://apkogwpcpshvttuqcuxy.supabase.co'; 
-const API_AUTH_LOGIN = '/api/auth/login'; // أو الرابط الكامل
-const API_FORGOT_PASSWORD = '/api/auth/forgot-password';
-const API_RESET_PASSWORD = '/api/auth/reset-password';
+const API_AUTH_LOGIN = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/auth/login'; // أو الرابط الكامل
+const API_FORGOT_PASSWORD = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/auth/forgot-password';
+const API_RESET_PASSWORD = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/auth/reset-password';
 
 
  // Authentication management
