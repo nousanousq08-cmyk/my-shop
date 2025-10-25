@@ -1,3 +1,15 @@
+
+
+// 🔗 روابط APIs
+const API_BASE_URL = 'https://apkogwpcpshvttuqcuxy.supabase.co'; // ضع رابط Supabase هنا
+const API_PRODUCTS = '/api/products';
+const API_PRODUCT_MEDIA = '/api/products/:id/media';
+const API_ORDERS = '/api/orders'; 
+const API_WILAYAS = '/api/wilayas';
+const API_SETTINGS = '/api/settings';
+
+
+
 // Global state
 let products = [];
 let orders = [];
@@ -5,7 +17,7 @@ let wilayas = {};
 let storeSettings = {};
 let currentLanguage = localStorage.getItem('language') || 'en';
 
-// Translations
+// Translations (نفس الكود السابق - محفوظ)
 const translations = {
     en: {
         storeName: "Best Shop",
@@ -149,7 +161,6 @@ function checkAuth() {
 function updateLanguage() {
     const t = translations[currentLanguage];
     
-    // Update all elements with data-i18n attribute
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
         if (t[key]) {
@@ -163,7 +174,6 @@ function updateLanguage() {
         }
     });
 
-    // Update RTL
     if (currentLanguage === 'ar') {
         document.body.classList.add('rtl');
         document.body.setAttribute('dir', 'rtl');
@@ -172,7 +182,6 @@ function updateLanguage() {
         document.body.setAttribute('dir', 'ltr');
     }
 }
-
 
 async function loadDashboardData() {
     try {
@@ -208,7 +217,6 @@ async function loadDashboardData() {
             })
         ]);
 
-        // Check if responses are OK
         if (!productsRes.ok) throw new Error(`Products API error: ${productsRes.status}`);
         if (!ordersRes.ok) throw new Error(`Orders API error: ${ordersRes.status}`);
         if (!wilayasRes.ok) throw new Error(`Wilayas API error: ${wilayasRes.status}`);
@@ -232,8 +240,6 @@ async function loadDashboardData() {
         alert('Error loading data: ' + error.message);
     }
 }  
-
-
 
 function setupEventListeners() {
     // Add product form
@@ -279,51 +285,109 @@ function showTab(tabName) {
     event.target.classList.remove('text-gray-600');
 }
 
+// 🔥 دالة إضافة منتج جديدة مع دعم الوسائط المتعددة
 async function addProduct(e) {
     e.preventDefault();
     
-    const formData = {
-        title: document.getElementById('productName').value,
-        price: parseFloat(document.getElementById('productPrice').value),
-        discount: document.getElementById('productDiscount').value ? parseFloat(document.getElementById('productDiscount').value) : null,
-        stock: parseInt(document.getElementById('productStock').value) || 0,
-        colors: document.getElementById('productColors').value,
-        sizes: document.getElementById('productSizes').value,
-        description: document.getElementById('productDescription').value,
-        media: []
-    };
+    const productName = document.getElementById('productName').value;
+    const productPrice = parseFloat(document.getElementById('productPrice').value);
+    const productDiscount = document.getElementById('productDiscount').value ? parseFloat(document.getElementById('productDiscount').value) : 0;
+    const productStock = parseInt(document.getElementById('productStock').value) || 0;
+    const productColors = document.getElementById('productColors').value;
+    const productSizes = document.getElementById('productSizes').value;
+    const productDescription = document.getElementById('productDescription').value;
+    const mediaFiles = document.getElementById('productMedia').files;
     
-    // Validation
-    if (!formData.title || !formData.price || formData.price < 0) {
+    // التحقق من المدخلات
+    if (!productName || !productPrice || productPrice < 0) {
         alert('Please enter valid product name and price');
         return;
     }
 
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch('/api/products', {
+        
+        // 1. أولاً: إنشاء المنتج في Supabase
+        const productData = {
+            title: productName,
+            price: productPrice,
+            discount: productDiscount,
+            stock: productStock,
+            colors: productColors,
+            sizes: productSizes,
+            description: productDescription,
+            media: [] // سيتم ملء هذا لاحقاً بعد رفع الوسائط
+        };
+
+        console.log('Creating product:', productData);
+
+        const productResponse = await fetch('/api/products', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(productData)
         });
         
-        if (response.ok) {
-            const newProduct = await response.json();
-            products.push(newProduct);
-            loadProductsList();
-            document.getElementById('addProductForm').reset();
-            alert('Product added successfully!');
-        } else {
-            const error = await response.json();
-            throw new Error(error.message || 'Failed to add product');
+        if (!productResponse.ok) {
+            const error = await productResponse.json();
+            throw new Error(error.message || 'Failed to create product');
         }
+
+        const newProduct = await productResponse.json();
+        console.log('Product created:', newProduct);
+
+        // 2. ثانياً: رفع الوسائط إذا وجدت
+        if (mediaFiles.length > 0) {
+            console.log(`Uploading ${mediaFiles.length} media files...`);
+            
+            for (let i = 0; i < mediaFiles.length; i++) {
+                const file = mediaFiles[i];
+                const formData = new FormData();
+                formData.append('productId', newProduct.id);
+                formData.append('file', file);
+                formData.append('type', file.type.startsWith('image/') ? 'image' : 'video');
+                formData.append('description', `Media ${i + 1} for ${productName}`);
+
+                try {
+                    const mediaResponse = await fetch(`/api/products/${newProduct.id}/media`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: formData
+                    });
+
+                    if (mediaResponse.ok) {
+                        const mediaData = await mediaResponse.json();
+                        console.log('Media uploaded:', mediaData);
+                    } else {
+                        console.warn('Failed to upload media file:', file.name);
+                    }
+                } catch (mediaError) {
+                    console.error('Error uploading media:', mediaError);
+                }
+            }
+        }
+
+        // 3. تحديث القائمة وإعادة تعيين النموذج
+        products.push(newProduct);
+        loadProductsList();
+        document.getElementById('addProductForm').reset();
+        
+        alert('Product added successfully!');
+        
     } catch (error) {
         console.error('Error adding product:', error);
         alert('Error adding product: ' + error.message);
     }
+}
+
+// 🔥 دالة إضافة المزيد من الملفات
+function addMoreFiles() {
+    const fileInput = document.getElementById('productMedia');
+    fileInput.click();
 }
 
 function loadProductsList() {
@@ -342,7 +406,7 @@ function loadProductsList() {
             Math.round(product.price * (1 - product.discount / 100)) : product.price;
         
         const productItem = document.createElement('div');
-        productItem.className = 'flex items-center justify-between p-4 border rounded-lg bg-white';
+        productItem.className = 'flex items-center justify-between p-4 border rounded-lg bg-white fade-in';
         productItem.innerHTML = `
             <div class="flex items-center space-x-4">
                 ${product.media && product.media.length > 0 ? 
@@ -417,7 +481,7 @@ function loadOrdersTable() {
     
     orders.forEach(order => {
         const orderRow = document.createElement('tr');
-        orderRow.className = 'border-b hover:bg-gray-50';
+        orderRow.className = 'border-b hover:bg-gray-50 fade-in';
         orderRow.innerHTML = `
             <td class="py-2 px-4">#${order.id.slice(-8)}</td>
             <td class="py-2 px-4">${order.customer_name}</td>
@@ -442,169 +506,6 @@ function loadOrdersTable() {
         container.appendChild(orderRow);
     });
 }
-
-// باقي الدوال محدثة بنفس المنطق...
-
-function logout() {
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('language');
-    window.location.href = 'auth.html';
-}
-// دوال إدارة الوسائط
-function loadMediaGallery() {
-    const productSelect = document.getElementById('mediaProductSelect');
-    const gallery = document.getElementById('mediaGallery');
-    
-    if (!productSelect || !gallery) return;
-    
-    // Update product select
-    productSelect.innerHTML = '<option value="">Select a product</option>';
-    products.forEach(product => {
-        const option = document.createElement('option');
-        option.value = product.id;
-        option.textContent = product.title;
-        productSelect.appendChild(option);
-    });
-    
-    // Load media gallery
-    gallery.innerHTML = '';
-    
-    // Show all media from all products
-    products.forEach(product => {
-        if (product.media && product.media.length > 0) {
-            product.media.forEach(media => {
-                const mediaItem = document.createElement('div');
-                mediaItem.className = 'media-item bg-gray-100 rounded-lg';
-                
-                if (media.type === 'image') {
-                    mediaItem.innerHTML = `
-                        <img src="${media.url}" alt="${media.description}" class="w-full h-32 object-cover">
-                        <div class="media-actions">
-                            <button onclick="deleteMedia('${product.id}', '${media.id}')" class="bg-red-500 text-white p-1 rounded text-xs">Delete</button>
-                        </div>
-                        <div class="p-2 text-xs text-gray-600">${product.title} - ${media.description || 'No description'}</div>
-                    `;
-                } else {
-                    mediaItem.innerHTML = `
-                        <video src="${media.url}" class="w-full h-32 object-cover" controls></video>
-                        <div class="media-actions">
-                            <button onclick="deleteMedia('${product.id}', '${media.id}')" class="bg-red-500 text-white p-1 rounded text-xs">Delete</button>
-                        </div>
-                        <div class="p-2 text-xs text-gray-600">${product.title} - ${media.description || 'No description'}</div>
-                    `;
-                }
-                
-                gallery.appendChild(mediaItem);
-            });
-        }
-    });
-    
-    if (gallery.innerHTML === '') {
-        gallery.innerHTML = '<p class="text-gray-500 text-center py-8">No media uploaded yet</p>';
-    }
-}
-
-async function addMedia() {
-    const productId = document.getElementById('mediaProductSelect').value;
-    const mediaType = document.getElementById('mediaTypeSelect').value;
-    const description = document.getElementById('mediaDescription').value;
-    const fileInput = document.getElementById('mediaUpload');
-    const file = fileInput.files[0];
-    
-    if (!productId) {
-        alert('Please select a product');
-        return;
-    }
-    
-    if (!file) {
-        alert('Please select a file to upload');
-        return;
-    }
-    
-    try {
-        const token = localStorage.getItem('adminToken');
-        const formData = new FormData();
-        formData.append('productId', productId);
-        formData.append('type', mediaType);
-        formData.append('description', description);
-        formData.append('file', file);
-        
-        const response = await fetch(`/api/products/${productId}/media`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: formData
-        });
-        
-        if (response.ok) {
-            const updatedProduct = await response.json();
-            // Update the product in our local array
-            const index = products.findIndex(p => p.id === productId);
-            if (index !== -1) {
-                products[index] = updatedProduct;
-            }
-            
-            loadMediaGallery();
-            
-            // Reset form
-            fileInput.value = '';
-            document.getElementById('mediaDescription').value = '';
-            
-            alert('Media added successfully!');
-        } else {
-            throw new Error('Failed to add media');
-        }
-    } catch (error) {
-        console.error('Error adding media:', error);
-        alert('Error adding media. Please try again.');
-    }
-}
-
-async function deleteMedia(productId, mediaId) {
-    if (!confirm('Are you sure you want to delete this media?')) return;
-    
-    try {
-        const token = localStorage.getItem('adminToken');
-        const response = await fetch(`/api/products/${productId}/media/${mediaId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        
-        if (response.ok) {
-            const product = products.find(p => p.id === productId);
-            if (product && product.media) {
-                product.media = product.media.filter(m => m.id !== mediaId);
-            }
-            loadMediaGallery();
-            alert('Media deleted successfully!');
-        } else {
-            throw new Error('Failed to delete media');
-        }
-    } catch (error) {
-        console.error('Error deleting media:', error);
-        alert('Error deleting media. Please try again.');
-    }
-}
-
-// أضف هذه الدوال للتصدير
-window.addMedia = addMedia;
-window.deleteMedia = deleteMedia; 
-
-// Export for HTML
-window.showTab = showTab;
-window.logout = logout;
-window.addWilaya = addWilaya;
-window.updateWilayaFee = updateWilayaFee;
-window.removeWilaya = removeWilaya;
-window.updateCCPAccount = updateCCPAccount;
-window.updateStoreSettings = updateStoreSettings;
-window.viewOrderDetails = viewOrderDetails;
-window.closeOrderDetails = closeOrderDetails;
-window.updateOrderStatus = updateOrderStatus;
-
 
 // دوال إدارة الولايات
 async function addWilaya() {
@@ -636,7 +537,6 @@ async function addWilaya() {
             wilayas[newWilaya] = newFee;
             loadDeliveryFees();
             
-            // Reset form
             document.getElementById('newWilaya').value = '';
             document.getElementById('newWilayaFee').value = '';
             
@@ -701,7 +601,6 @@ async function removeWilaya(wilaya) {
     }
 }
 
-// دالة تحميل رسوم التوصيل
 function loadDeliveryFees() {
     const container = document.getElementById('deliveryFeesList');
     if (!container) return;
@@ -710,7 +609,7 @@ function loadDeliveryFees() {
     
     Object.entries(wilayas).forEach(([wilaya, fee]) => {
         const deliveryItem = document.createElement('div');
-        deliveryItem.className = 'flex justify-between items-center p-3 border rounded-lg bg-white';
+        deliveryItem.className = 'flex justify-between items-center p-3 border rounded-lg bg-white fade-in';
         deliveryItem.innerHTML = `
             <span class="font-medium">${wilaya}</span>
             <div class="flex items-center space-x-2">
@@ -888,7 +787,16 @@ async function updateOrderStatus(orderId, status) {
     }
 }
 
-// تأكد من تصدير جميع الدوال للاستخدام في HTML
+function logout() {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('language');
+    window.location.href = 'auth.html';
+}
+
+// 🔥 تصدير الدوال الجديدة للاستخدام في HTML
+window.addMoreFiles = addMoreFiles;
+window.showTab = showTab;
+window.logout = logout;
 window.addWilaya = addWilaya;
 window.updateWilayaFee = updateWilayaFee;
 window.removeWilaya = removeWilaya;
@@ -897,3 +805,7 @@ window.updateStoreSettings = updateStoreSettings;
 window.viewOrderDetails = viewOrderDetails;
 window.closeOrderDetails = closeOrderDetails;
 window.updateOrderStatus = updateOrderStatus;
+window.editProduct = function(productId) {
+    // TODO: Implement edit product functionality
+    alert('Edit product functionality coming soon!');
+};

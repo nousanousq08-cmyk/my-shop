@@ -8,16 +8,20 @@
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-in-out;
 }
 
 .auth-form.hidden {
     display: none;
+    opacity: 0;
+    transform: translateY(-20px);
 }
 
 #authMessage {
     padding: 12px;
     border-radius: 8px;
     margin-top: 16px;
+    transition: all 0.3s ease-in-out;
 }
 
 #authMessage.success {
@@ -30,4 +34,79 @@
     background: #fee2e2;
     color: #991b1b;
     border: 1px solid #fecaca;
+}
+
+#authMessage.hidden {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* تأثيرات للزر */
+.auth-btn {
+    transition: all 0.3s ease;
+}
+
+.auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.auth-btn:active {
+    transform: translateY(0);
+}
+
+/* تأثيرات للحقول */
+.form-input {
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+}
+
+/* تأثيرات للروابط */
+.auth-link {
+    transition: all 0.3s ease;
+}
+
+.auth-link:hover {
+    transform: translateX(2px);
+}
+
+/* تحسينات للاستجابة */
+@media (max-width: 480px) {
+    .auth-container {
+        width: 95%;
+        margin: 20px auto;
+    }
+    
+    .auth-form {
+        padding: 20px;
+    }
+}
+
+/* تأثيرات للتحميل */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
