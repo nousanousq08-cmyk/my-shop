@@ -1,4 +1,38 @@
 
+// ============ جزء المصادقة ============
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const supabase = createClient(
+  'https://apkogwpcpshvttuqcuxy.supabase.co',   // ← غيّري هذا!
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwa29nd3BjcHNodnR0dXFjdXh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5Nzk1MDUsImV4cCI6MjA3NjU1NTUwNX0.lzdSz7RHpkPDK5l-lWWpeC379oOFfjJDiAIHF-m8b8g'                  // ← غيّري هذا!
+);
+
+// دالة للتحقق من الجلسة
+async function checkAuthAndRunDashboard() {
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (!session) {
+    alert('يجب تسجيل الدخول للوصول إلى لوحة التحكم!');
+    window.location.href = '/';
+    return;
+  }
+
+  // إذا كان مسجّل دخوله → نشغّل باقي الكود
+  initializeDashboard(session.user);
+}
+
+// ============ نهاية جزء المصادقة ============
+
+
+
+
+
+
+
+
+
+
+
 
 // 🔗 روابط APIs
 const API_BASE_URL = 'https://apkogwpcpshvttuqcuxy.supabase.co'; // ضع رابط Supabase هنا
@@ -7,7 +41,6 @@ const API_PRODUCT_MEDIA = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/products
 const API_ORDERS = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/orders'; 
 const API_WILAYAS = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/wilayas';
 const API_SETTINGS = 'https://apkogwpcpshvttuqcuxy.supabase.co/api/settings';
-
 
 
 // Global state
@@ -809,3 +842,12 @@ window.editProduct = function(productId) {
     // TODO: Implement edit product functionality
     alert('Edit product functionality coming soon!');
 };
+
+
+
+
+
+
+
+// ابدأ التحقق من المصادقة عند تحميل الصفحة
+checkAuthAndRunDashboard();
